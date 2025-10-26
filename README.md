@@ -1,4 +1,4 @@
-# 🕷️ ScanSQLi - SQL Injection Patch Scanner
+# 🕷️ ScanSQLi — SQL Injection Patch Scanner
 
 ![version](https://img.shields.io/badge/version-1.0-green.svg)
 ![python](https://img.shields.io/badge/python-3.x-blue.svg)
@@ -12,7 +12,7 @@
 **ScanSQLi** is a lightweight, multithreaded SQL Injection (SQLi) scanner written in Python.  
 It tests multiple target URLs, parameters, and payloads concurrently to detect potential SQL injection vulnerabilities.
 
-This tool is intended for penetration testers, web security researchers, and educators. Use responsibly and only on systems you are authorized to test.
+Intended audience: penetration testers, web security researchers, educators. Use responsibly and only on systems you are authorized to test.
 
 **Repository:** https://github.com/hmei7-id/sqli_scanner
 
@@ -27,7 +27,7 @@ This tool is for **ethical** security testing and educational purposes only. Do 
 ## 🧩 Features
 
 - Multi-threaded scanning for faster checks  
-- Simple, file-driven input (targets, params, payloads)  
+- File-driven input (targets, params, payloads)  
 - Colored terminal output (Green = Vulnerable, Red = Not vulnerable)  
 - Saves results automatically to `Vuln.txt`  
 - Works on Linux, Termux (Android), and Windows (with Python 3)
@@ -39,168 +39,174 @@ This tool is for **ethical** security testing and educational purposes only. Do 
 - Python 3.6+  
 - pip
 
-External Python packages:
+External Python packages (listed in `requirements.txt`):
 
+```
+requests
+colorama
+```
 
-
-You can install requirements with:
+Install all requirements:
 ```bash
 pip install -r requirements.txt
+```
 
+---
 
-🔧 Installation (First Time) — Linux / Termux / macOS
+## 🔧 Installation (First Time)
 
-Clone the repository:
+### Linux / Termux / macOS
 
+1. Clone the repository:
+```bash
 git clone https://github.com/hmei7-id/sqli_scanner.git
+```
 
-
-Change directory:
-
+2. Change directory:
+```bash
 cd sqli_scanner
+```
 
-
-(Optional) Create a virtual environment (recommended):
-
+3. (Optional but recommended) Create and activate a virtual environment:
+```bash
 python3 -m venv venv
 source venv/bin/activate    # Linux / Termux / macOS
+```
 
-
-Install dependencies:
-
+4. Install dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-🪟 Installation (Windows)
+### Windows (Optional)
 
-Clone the repository:
-
+1. Clone and change directory:
+```powershell
 git clone https://github.com/hmei7-id/sqli_scanner.git
 cd sqli_scanner
+```
 
-
-(Optional) Create and activate a virtual environment:
-
+2. (Optional) Create and activate virtual environment:
+```powershell
 python -m venv venv
 venv\Scripts\activate
+```
 
-
-Install dependencies:
-
+3. Install dependencies:
+```powershell
 pip install -r requirements.txt
+```
 
-▶️ Usage (First Run)
+---
+
+## ▶️ Usage (First Run)
 
 Run the scanner:
-
+```bash
 python3 Scan.py
+```
 
+You will be asked interactively for:
 
-When prompted, provide file paths (one per prompt):
+- `Website files`: path to a file containing target sites (one per line) — e.g. `websites.txt`  
+- `Parameter File (Mysql.txt)`: path to a file containing parameter endpoints — e.g. `Mysql.txt`  
+- `SQLi Payload File (sql1.txt or sql2.txt)`: path to payload list — e.g. `sql1.txt`  
+- `Number of threads (10-20)`: integer (recommended 5–20)
 
+Example prompt:
+```
 [!] Enter Website files: websites.txt
 [!] Input Parameter File (Mysql.txt):
 [!] Input SQLi Payload File (sql1.txt or sql2.txt):
 [!] Enter number of threads (10-20): 10
+```
 
+The script will scan and print results to the terminal and save vulnerable URLs to `Vuln.txt`.
 
-websites.txt — a list of target base URLs (one per line). Example:
+---
 
-https://example.com
+## 💾 Example Input Files
+
+Create these example files in the project folder before running the scanner.
+
+**websites.txt**
+```
 https://testphp.vulnweb.com
-192.168.1.10
+https://example.com
+http://192.168.1.10
+```
 
-
-Mysql.txt — list of parameter endpoints to test. Example:
-
+**Mysql.txt**
+```
 index.php?id=
 product.php?id=
+category.php?id=
 page.php?page=
+```
 
-
-sql1.txt / sql2.txt — payload strings to append to parameters. Example:
-
+**sql1.txt**
+```
 '
 " or "1"="1
 ' OR '1'='1
 -- -
-
-
-The scanner will print results to the terminal and save found vulnerable URLs to Vuln.txt.
-
-💾 Example Files (Create these before running)
-
-websites.txt
-
-https://testphp.vulnweb.com
-https://example.com
-
-
-Mysql.txt
-
-index.php?id=
-product.php?id=
-category.php?id=
-
-
-sql1.txt
-
-'
-" or "1"="1
 ' OR 'a'='a
--- -
+```
 
-🧰 Command-line Options (Script Prompts)
+---
 
-The script Scan.py is interactive and will prompt for:
+## 🔍 Output
 
-Website list file path
-
-Parameter list file path
-
-Payload list file path
-
-Number of threads to use (recommended 5–20 depending on system/network)
-
-🔍 Output
-
-Vulnerable endpoints are shown in green:
-
+- Vulnerable endpoints printed in **green**:
+```
 [+] VULN: https://testphp.vulnweb.com/product.php?id='
+```
+- Non-vulnerable endpoints printed in **red**.
+- All vulnerable URLs are saved to `Vuln.txt` (one per line).
 
+---
 
-Non-vulnerable endpoints shown in red.
+## ⚙️ Tuning & Recommendations
 
-All vulnerable URLs are written to Vuln.txt (one per line).
+- Increase `num_threads` for faster scanning, but monitor CPU & network usage. Typical: `5–20`.  
+- Start with small payload lists for an initial sweep; expand payloads for deeper testing.  
+- Use a proxy (Burp Suite, OWASP ZAP) for verification and to throttle/record traffic.  
+- Always obtain written permission before scanning third-party targets.
 
-⚙️ Tuning & Recommendations
+---
 
-Increase num_threads for faster scanning but monitor CPU and bandwidth. Typical values: 5-20.
+## 🧪 Tested Platforms
 
-Use a limited payload list for initial scans; expand payloads for deeper testing.
+- Kali Linux — ✅  
+- Ubuntu — ✅  
+- Termux (Android) — ✅  
+- Windows 10/11 — ✅ (color support may vary)
 
-Consider using a proxy (Burp Suite, OWASP ZAP) for deeper analysis and to avoid noisy scans.
+---
 
-Always obtain permission before scanning a third-party target.
+## 🛠️ Troubleshooting
 
-🧪 Tested Platforms
+- `ModuleNotFoundError`: run `pip install -r requirements.txt`.  
+- Colors not visible on Windows: try Windows Terminal or enable ANSI support.  
+- Network errors: ensure targets are reachable and not blocked by firewall.
 
-Kali Linux — ✅
+---
 
-Ubuntu — ✅
-
-Termux (Android) — ✅
-
-Windows 10/11 — ✅ (CLI colors may vary)
-
-🛠️ Troubleshooting
-
-ModuleNotFoundError: ensure you installed dependencies pip install -r requirements.txt.
-
-Colors not showing on Windows: use Windows Terminal or enable ANSI escape support.
-
-Network errors: ensure targets are reachable and no firewall blocks outbound requests.
-
-📚 Development & Contribution
+## 📚 Development & Contribution
 
 Contributions, issues, and feature requests are welcome. Please open issues or PRs on the repository:
+
 https://github.com/hmei7-id/sqli_scanner
+
+---
+
+## 👨‍💻 Author
+
+**Herlambang Ichtiarto (Lam)**  
+GitHub: https://github.com/hmei7-id
+
+---
+
+## 📜 License
+
+This project is distributed under the **MIT License**. See `LICENSE` for details.
