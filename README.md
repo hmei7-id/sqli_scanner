@@ -201,8 +201,7 @@ https://github.com/hmei7-id/sqli_scanner
 ---
 
 ## 👨‍💻 Author
-
-**Herlambang Ichtiarto (Lam)**  
+hmei7
 GitHub: https://github.com/hmei7-id
 
 ---
